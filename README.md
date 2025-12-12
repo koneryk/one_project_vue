@@ -1,4 +1,3 @@
 # one_project_vue
-version: 1.0
-teacher edition
-by debil
+version: 2.0 alpha 
+optional data been deleted
