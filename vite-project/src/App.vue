@@ -1,84 +1,53 @@
 <script setup>
-  let  one = document.getElementById("one")
-  let  two = document.getElementById("two")
-  console.log(one)
-  console.log(two)
-  
+import { ref } from 'vue';
 
+const createTaskRef = ref(null); 
+const taskWrapperRef = ref(null); 
 
+const mainStyle = "display:flex;";
+const hideStyle = "display:none;";
+
+const currentStyle = ref(mainStyle); 
+
+const tasks = ref([]);
+
+function handleToggle() {
+  currentStyle.value = currentStyle.value === mainStyle ? hideStyle : mainStyle;
+  createTaskRef.value.style = currentStyle.value;
+}
+
+function addTask() {
+  const taskInput = createTaskRef.value.querySelector('.task-input');
+  if (taskInput && taskInput.value.trim() !== "") {
+    tasks.value.push(taskInput.value);
+    taskInput.value = "";
+  }
+}
 </script>
 
 <template>
-  <div class="box">
-    <div id ="one" class="one"></div>
-    <div id ="two" class="two"></div>
-    <div class="three"></div>
-    <div class="four"></div>
-    <div class="five"></div>
-    <div class="six"></div>
-    <div class="seven"></div>
-    <div class="eith"></div>
-    <div class="nine"></div>
-    <div class="ten"></div>
+  <button @click="handleToggle">
+    {{ currentStyle === mainStyle ? 'Скрыть форму' : 'Показать форму' }}
+  </button>
+  <div ref="createTaskRef" :style="{ display: currentStyle === mainStyle ? 'flex' : 'none' }" class="create-task">
+    <input type="text" class="task-input" placeholder="Новая задача" />
+    <button @click="addTask">Добавить задачу</button>
   </div>
-  <button></button>
- 
+  
+  <ul ref="taskWrapperRef" class="task-list">
+    <li v-for="(task) in tasks" >{{ task }}</li>
+  </ul>
 </template>
 
 <style scoped>
-.box{
-  display: flex;
-  justify-content: space-evenly;
-  flex-direction: row;
+.create-task {
+  margin-top: 10px;
+  gap: 10px;
+  align-items: center;
 }
-.one{
-  height: 30px;
-  width: 30px;
-  background: red;
-}
-.two{
-  height: 30px;
-  width: 30px;
-  background: blue;
-}
-.three{
-  height: 30px;
-  width: 30px;
-  background: aqua;
-}
-.four{
-  height: 30px;
-  width: 30px;
-  background: salmon;
-}
-.five{
-  height: 30px;
-  width: 30px;
-  background: hotpink;
-}
-.six{
-  height: 30px;
-  width: 30px;
-  background: salmon;
-}
-.seven{
-  height: 30px;
-  width: 30px;
-  background: skyblue;
-}
-.eith{
-  height: 30px;
-  width: 30px;
-  background: saddlebrown;
-}
-.nine{
-  height: 30px;
-  width: 30px;
-  background: khaki;
-}
-.ten{
-  height: 30px;
-  width: 30px;
-  background: green;
+.task-list {
+  margin-top: 20px;
+  list-style-type: disc;
+  padding-left: 20px;
 }
 </style>
